@@ -1,0 +1,17 @@
+diff --git a/libs/kotaemon/kotaemon/llms/chats/langchain_based.py b/libs/kotaemon/kotaemon/llms/chats/langchain_based.py
+--- a/libs/kotaemon/kotaemon/llms/chats/langchain_based.py
++++ b/libs/kotaemon/kotaemon/llms/chats/langchain_based.py
+@@ -391,8 +391,11 @@ class LangchainBasedLLM(BaseLLM):
+     def _get_lc_class(self):
+         try:
+-            from langchain_ollama import ChatOllama
+-            return ChatOllama
++            from langchain_openai import ChatOpenAI
++            return ChatOpenAI
+         except ImportError:
+-            raise ImportError("Please install langchain-ollama")
++            try:
++                from langchain.chat_models import ChatOpenAI
++                return ChatOpenAI
++            except ImportError:
++                raise ImportError("Please install langchain-openai")

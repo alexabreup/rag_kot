@@ -1,0 +1,44 @@
+encoding_model: cl100k_base
+skip_workflows: []
+
+server:
+  host: "0.0.0.0"
+  port: 7860
+  share: false
+
+llm:
+  type: openai_chat
+  api_key: ${OPENAI_API_KEY}
+  api_base: https://api.openai.com/v1
+  model: gpt-4
+  model_supports_json: true
+  request_timeout: 1800.0
+  concurrent_requests: 5
+
+embeddings:
+  async_mode: threaded
+  batch_size: 16
+  llm:
+    type: deepseek_embedding
+    api_key: ${DEEPSEEK_API_KEY}
+    api_base: https://api.deepseek.com/v1
+    model: deepseek-embed
+    concurrent_requests: 5
+
+parallelization:
+  stagger: 0.3
+
+async_mode: threaded
+
+embed_graph:
+  enabled: false
+
+use_ollama: false
+ollama:
+  enabled: false
+
+use_local_llm: false
+use_langchain: true
+
+retriever:
+  type: default

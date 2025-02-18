@@ -1,0 +1,24 @@
+FROM ghcr.io/cinnamon/kotaemon:main-lite
+
+# Install Ollama
+RUN curl -fsSL https://ollama.com/install.sh | sh
+
+# Install langchain dependencies with specific versions required by Kotaemon
+RUN pip install --no-cache-dir \
+    "langchain-core==0.1.27" \
+    "langchain-openai==0.0.5" \
+    "langchain-ollama==0.2.3" \
+    "pydantic>=1.10,<3" \
+    "tiktoken>=0.5.2,<0.6.0" \
+    "tenacity==8.2.3" \
+    "umap-learn==0.5.5"
+
+# Copy and run the modification script
+COPY modify_langchain.py /app/
+RUN python /app/modify_langchain.py
+
+# Set environment variables
+ENV USE_OLLAMA=true \
+    DISABLE_LOCAL_LLM=false \
+    USE_LANGCHAIN=true \
+    PYTHONUNBUFFERED=1
